@@ -10,11 +10,6 @@ the same counting kernel, so results are directly comparable:
 | `omp`    | OpenMP only, one process                                               |
 | `mpi`    | **hybrid**: MPI processes × OpenMP threads, parallel disk reads        |
 
-The project layout and the *byte-balanced* distribution idea follow
-[giuseppeangri/mpi-parallel-words-count](https://github.com/giuseppeangri/mpi-parallel-words-count)
-(master file list, split by total bytes). It is extended with OpenMP, a second
-reduction strategy, mid-file word-border handling in both MPI and OpenMP, tests and plots.
-
 ## Layout
 ```
 include/   headers (one per module, documented)
