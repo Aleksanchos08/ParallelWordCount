@@ -1,0 +1,12 @@
+out/
+build/
+.vs/
+CMakeSettings.json
+x64/
+*.obj
+*.exe
+logs/*.log
+data/*
+!data/.gitkeep
+bin/
+obj/
