@@ -1,6 +1,4 @@
-
 #include "generator.h"
-
 #include <algorithm>
 #include <cstdio>
 #include <filesystem>
