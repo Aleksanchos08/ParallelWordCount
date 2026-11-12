@@ -26,14 +26,14 @@ A **master list**: a text file with one path per line (relative paths are resolv
 list's folder; `#` starts a comment). Files may have any sizes. Generate a data set:
 
 ```
-wc gen data\bench 64 16384        # 64 files, avg 16 MB (sizes vary 0.25x..1.75x) -> ~1 GB
+.\bin\Release\wc.exe gen data\small 64 16384      # 64 files, avg 16 MB (sizes vary 0.25x..1.75x) -> ~1 GB
 ```
 
 ## Run
 ```
-wc serial data\bench\00_master.txt
-wc omp    data\bench\00_master.txt --threads 8
-mpiexec -n 4 wc mpi data\bench\00_master.txt --threads 2 --reduce alltoall --csv tests-results\results.csv
+.\bin\Release\wc.exe serial data\small\00_master.txt
+.\bin\Release\wc.exe omp data\small\00_master.txt --threads 8
+mpiexec -n 4 .\bin\Release\wc.exe mpi data\small\00_master.txt --threads 2 --reduce alltoall --csv tests-results\results.csv
 ```
 Options: `--threads N`, `--reduce gather|alltoall`, `--topk K`, `--csv FILE`, `--log`.
 Output: word count, distinct words, **checksum** (must be identical for every mode and
