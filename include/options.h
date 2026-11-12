@@ -1,4 +1,3 @@
-// options.h - command line
 #pragma once
 #include <string>
 #include "common.h"
@@ -22,4 +21,4 @@ struct Options {
 Options parseOptions(int argc, char** argv);
 const char* usageText();
 
-}  // namespace wc
+}

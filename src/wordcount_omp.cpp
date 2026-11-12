@@ -1,9 +1,6 @@
-// wordcount_omp.cpp - shared-memory parallel counting (OpenMP)
 #include "wordcount.h"
 #include "tokenizer.h"
-
 #include <omp.h>
-
 #include <algorithm>
 #include <functional>
 
@@ -15,8 +12,8 @@ struct Task {
     std::size_t  lo, hi;  // words starting in [lo,hi) of chunk->data
 };
 
-// Cut every chunk into pieces of TASK_BYTES. Works equally well for one huge file and for
-// thousands of tiny ones, because tasks are just ranges.
+
+
 std::vector<Task> buildTasks(const std::vector<Chunk>& chunks) {
     std::vector<Task> tasks;
     for (const Chunk& c : chunks)
@@ -25,8 +22,8 @@ std::vector<Task> buildTasks(const std::vector<Chunk>& chunks) {
     return tasks;
 }
 
-// Parallel merge without locks: thread t builds the final slice of keys with hash % T == t
-// by scanning all thread-private histograms. The slices are disjoint -> just concatenate.
+
+
 Histogram mergeByHash(std::vector<Histogram>& local, int T) {
     if (T == 1) return std::move(local[0]);
 
@@ -50,7 +47,7 @@ Histogram mergeByHash(std::vector<Histogram>& local, int T) {
     return result;
 }
 
-}  // namespace
+}
 
 Histogram countOpenMP(const std::vector<Chunk>& chunks, int threads) {
     const int T = std::max(1, threads);
@@ -71,4 +68,4 @@ Histogram countOpenMP(const std::vector<Chunk>& chunks, int threads) {
     return mergeByHash(local, T);
 }
 
-}  // namespace wc
+}

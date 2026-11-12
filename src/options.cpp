@@ -1,6 +1,4 @@
-// options.cpp
 #include "options.h"
-
 #include <cstdlib>
 
 namespace wc {
@@ -57,4 +55,4 @@ Options parseOptions(int argc, char** argv) {
     return o;
 }
 
-}  // namespace wc
+}

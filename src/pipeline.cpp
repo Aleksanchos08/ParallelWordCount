@@ -1,17 +1,6 @@
-// pipeline.cpp - serial / OpenMP / hybrid execution modes
-//
-//   Phase       serial & omp                       mpi
-//   ---------   --------------------------------   ---------------------------------------------
-//   setup       load master list                   rank 0 loads list -> MPI_Bcast -> every rank computes its segments
-//   read        read all files                     every rank reads only its own byte range
-//   count       one thread / OpenMP threads        OpenMP threads inside every rank
-//   comm        -                                  MPI_Gatherv or MPI_Alltoallv, then tiny reductions
 #include "pipeline.h"
-
 #include <omp.h>
-
 #include <algorithm>
-
 #include "file_list.h"
 #include "file_reader.h"
 #include "logger.h"
@@ -54,7 +43,7 @@ RunResult runLocal(const Options& opt, bool serial) {
     return r;
 }
 
-}  // namespace
+}
 
 RunResult runSerial(const Options& opt) { return runLocal(opt, true); }
 RunResult runOpenMP(const Options& opt) { return runLocal(opt, false); }
@@ -67,7 +56,7 @@ RunResult runMpi(const Options& opt, int rank, int P) {
     barrier();  // start all ranks together so timings are comparable
     Timer wall, t;
 
-    // ---- 1. setup: only rank 0 reads the master list, then it is broadcast ----
+
     FileList list;
     std::string err;
     bool rootOk = true;
@@ -77,7 +66,7 @@ RunResult runMpi(const Options& opt, int rank, int P) {
     }
     if (!broadcastFileList(list, rootOk, rank)) return r;  // same decision on all ranks
 
-    // each rank derives its own part of the work - no scatter needed
+
     const std::vector<Segment> segs = segmentsForRank(list, rank, P);
     std::uint64_t myBytes = 0;
     for (const Segment& s : segs) myBytes += s.end - s.begin;
@@ -87,7 +76,7 @@ RunResult runMpi(const Options& opt, int rank, int P) {
     Logger::info("%zu files, %llu bytes total, ~%llu bytes per rank, %d thread(s) per rank", list.files.size(),
                  (unsigned long long)list.totalSize, (unsigned long long)myBytes, r.threads);
 
-    // ---- 2. read: every rank reads only its own segments ----
+
     t.reset();
     std::vector<Chunk> chunks;
     const bool readOk = readSegments(list, segs, chunks, err);
@@ -95,7 +84,7 @@ RunResult runMpi(const Options& opt, int rank, int P) {
     if (!agreeAll(readOk)) return r;                       // never leave some ranks waiting in a collective
     const double tRead = t.elapsed();
 
-    // ---- 3. count: local histogram, OpenMP inside the rank ("map") ----
+
     t.reset();
     Histogram local = countOpenMP(chunks, r.threads);
     chunks.clear();
@@ -103,7 +92,7 @@ RunResult runMpi(const Options& opt, int rank, int P) {
     const double tCount = t.elapsed();
     Logger::info("local histogram: %zu distinct words", local.size());
 
-    // ---- 4. reduce: combine histograms across ranks ----
+
     t.reset();
     Histogram owned = reduceHistograms(local, opt.reduce, rank, P);
     const Stats ls = computeStats(owned);
@@ -111,11 +100,11 @@ RunResult runMpi(const Options& opt, int rank, int P) {
     r.top   = gatherTop(owned, opt.topk, rank, P);
     const double tComm = t.elapsed();
 
-    // slowest rank defines the phase time
+
     const std::vector<double> mx = maxOverRanks({tSetup, tRead, tCount, tComm, wall.elapsed()});
     if (rank == 0) { r.t.setup = mx[0]; r.t.read = mx[1]; r.t.count = mx[2]; r.t.comm = mx[3]; r.t.total = mx[4]; }
     r.ok = true;
     return r;
 }
 
-}  // namespace wc
+}

@@ -1,15 +1,12 @@
-// mpi_comm.cpp - every MPI call of the project is in this file
 #include "mpi_comm.h"
-
 #include <cstdio>
 #include <mpi.h>
-
 #include <algorithm>
 
 namespace wc {
 namespace {
 
-// Variable-size gather of byte blocks to rank 0 (MPI_Gather for sizes + MPI_Gatherv for data).
+
 void gatherBytes(const std::vector<char>& mine, std::vector<char>& all, int rank, int P) {
     int n = static_cast<int>(mine.size());
     std::vector<int> counts(P), displs(P);
@@ -22,7 +19,7 @@ void gatherBytes(const std::vector<char>& mine, std::vector<char>& all, int rank
     MPI_Gatherv(mine.data(), n, MPI_CHAR, all.data(), counts.data(), displs.data(), MPI_CHAR, 0, MPI_COMM_WORLD);
 }
 
-// Hash-partitioned all-to-all exchange: every word travels to rank ownerOf(word).
+
 Histogram exchangeByOwner(Histogram& local, int P) {
     std::vector<std::vector<char>> out(P);
     for (const auto& kv : local) appendPair(out[ownerOf(kv.first, P)], kv.first, kv.second);
@@ -49,7 +46,7 @@ Histogram exchangeByOwner(Histogram& local, int P) {
     return mine;
 }
 
-}  // namespace
+}
 
 void barrier() { MPI_Barrier(MPI_COMM_WORLD); }
 
@@ -79,7 +76,7 @@ Histogram reduceHistograms(Histogram& local, ReduceStrategy strategy, int rank, 
 
     if (strategy == ReduceStrategy::AllToAll) return exchangeByOwner(local, P);
 
-    // Gather: everything to rank 0, rank 0 merges (simple, but rank 0 becomes the bottleneck)
+
     std::vector<char> mine, all;
     for (const auto& kv : local) appendPair(mine, kv.first, kv.second);
     local.clear();
@@ -96,8 +93,8 @@ Stats reduceStats(const Stats& mine) {
     return g;
 }
 
-// The global top-K is contained in the union of the per-rank top-K lists
-// (words are never split between ranks after the reduce step).
+
+
 TopList gatherTop(const Histogram& owned, std::size_t k, int rank, int P) {
     std::vector<char> mine, all;
     for (const auto& wcnt : topK(owned, k)) appendPair(mine, wcnt.first, wcnt.second);
@@ -114,4 +111,4 @@ std::vector<double> maxOverRanks(const std::vector<double>& mine) {
     return out;
 }
 
-}  // namespace wc
+}

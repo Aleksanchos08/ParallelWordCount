@@ -1,15 +1,8 @@
-// test_partition.cpp - correctness tests that need NO MPI.
-// For many process counts P it simulates all ranks one after another and checks that
-//   (1) the byte ranges cover every file exactly once and are balanced (+-1 byte),
-//   (2) the merged per-rank histograms equal the serial histogram of the whole data,
-//   (3) countOpenMP gives the same histogram as countSerial,
-//   (4) (de)serialisation of file lists and histograms round-trips.
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
 #include <string>
 #include <vector>
-
 #include "file_list.h"
 #include "file_reader.h"
 #include "generator.h"

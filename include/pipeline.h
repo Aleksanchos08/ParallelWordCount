@@ -1,4 +1,3 @@
-// pipeline.h - the three execution modes
 #pragma once
 #include "common.h"
 #include "histogram.h"
@@ -29,4 +28,4 @@ RunResult runSerial(const Options& opt);
 RunResult runOpenMP(const Options& opt);
 RunResult runMpi(const Options& opt, int rank, int numRanks);
 
-}  // namespace wc
+}

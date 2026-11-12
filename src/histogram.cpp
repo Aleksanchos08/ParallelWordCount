@@ -1,6 +1,4 @@
-// histogram.cpp
 #include "histogram.h"
-
 #include <algorithm>
 #include <cstring>
 #include <functional>
@@ -53,4 +51,4 @@ std::size_t ownerOf(const std::string& word, int numRanks) {
     return std::hash<std::string>()(word) % static_cast<std::size_t>(numRanks);
 }
 
-}  // namespace wc
+}

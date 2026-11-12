@@ -1,6 +1,4 @@
-// partition.cpp
 #include "partition.h"
-
 #include <algorithm>
 
 namespace wc {
@@ -8,7 +6,7 @@ namespace wc {
 std::vector<Segment> segmentsForRank(const FileList& list, int rank, int numRanks) {
     const std::uint64_t total = list.totalSize;
     const std::uint64_t P     = static_cast<std::uint64_t>(numRanks);
-    // This rank's slice of the virtual concatenated stream. Slice sizes differ by at most 1 byte.
+
     const std::uint64_t gBegin = total * static_cast<std::uint64_t>(rank) / P;
     const std::uint64_t gEnd   = total * static_cast<std::uint64_t>(rank + 1) / P;
 
@@ -25,4 +23,4 @@ std::vector<Segment> segmentsForRank(const FileList& list, int rank, int numRank
     return segs;
 }
 
-}  // namespace wc
+}

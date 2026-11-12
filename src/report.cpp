@@ -1,6 +1,4 @@
-// report.cpp
 #include "report.h"
-
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
@@ -44,4 +42,4 @@ bool appendCsv(const std::string& path, const Options& opt, const RunResult& r) 
     return true;
 }
 
-}  // namespace wc
+}

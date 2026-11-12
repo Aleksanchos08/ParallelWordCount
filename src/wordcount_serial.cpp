@@ -1,4 +1,3 @@
-// wordcount_serial.cpp - reference implementation
 #include "wordcount.h"
 #include "tokenizer.h"
 
@@ -11,4 +10,4 @@ Histogram countSerial(const std::vector<Chunk>& chunks) {
     return h;
 }
 
-}  // namespace wc
+}

@@ -1,8 +1,5 @@
-// main.cpp - entry point: parse options, initialise MPI, run the selected mode, report.
 #include <mpi.h>
-
 #include <cstdio>
-
 #include "generator.h"
 #include "logger.h"
 #include "options.h"
@@ -10,7 +7,7 @@
 #include "report.h"
 
 int main(int argc, char** argv) {
-    // FUNNELED: only the main thread calls MPI; OpenMP threads are used between MPI calls.
+
     int provided = 0;
     MPI_Init_thread(&argc, &argv, MPI_THREAD_FUNNELED, &provided);
     int rank = 0, size = 1;

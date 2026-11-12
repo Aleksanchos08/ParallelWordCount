@@ -1,4 +1,4 @@
-// generator.cpp
+
 #include "generator.h"
 
 #include <algorithm>
@@ -19,7 +19,7 @@ bool generateDataset(const std::string& dir, int numFiles, int avgKB, std::strin
 
     std::mt19937_64 rng(42);
 
-    // Vocabulary of random "words" + Zipf distribution (word i has weight 1/(i+1)) like real text.
+
     const int V = 50000;
     std::vector<std::string> vocab(V);
     for (auto& w : vocab) {
@@ -40,7 +40,7 @@ bool generateDataset(const std::string& dir, int numFiles, int avgKB, std::strin
         std::ofstream out(fs::path(dir) / name, std::ios::binary);
         if (!out) { error = std::string("cannot write ") + name; return false; }
 
-        // different file sizes on purpose: this is what the byte-balanced partition is for
+
         const std::size_t target = static_cast<std::size_t>(avgKB * 1024.0 * (0.25 + 1.5 * U01(rng)));
         std::string text;
         std::size_t written = 0;
@@ -61,4 +61,4 @@ bool generateDataset(const std::string& dir, int numFiles, int avgKB, std::strin
     return true;
 }
 
-}  // namespace wc
+}  

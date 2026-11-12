@@ -1,6 +1,4 @@
-// file_list.cpp
 #include "file_list.h"
-
 #include <cstring>
 #include <filesystem>
 #include <fstream>
@@ -44,7 +42,7 @@ bool loadFileList(const std::string& masterPath, FileList& out, std::string& err
     return true;
 }
 
-// Format per file: 8-byte size, path bytes, '\0'
+
 std::vector<char> packFileList(const FileList& list) {
     std::vector<char> buf;
     for (const FileInfo& f : list.files) {
@@ -72,4 +70,4 @@ FileList unpackFileList(const char* data, std::size_t size) {
     return list;
 }
 
-}  // namespace wc
+}

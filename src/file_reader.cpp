@@ -1,6 +1,4 @@
-// file_reader.cpp
 #include "file_reader.h"
-
 #include <algorithm>
 #include <fstream>
 
@@ -10,7 +8,7 @@ bool readSegment(const FileInfo& file, const Segment& seg, Chunk& out, std::stri
     std::ifstream in(file.path, std::ios::binary);
     if (!in) { error = "cannot open " + file.path; return false; }
 
-    // one byte BEFORE the segment (are we inside a word?) and a tail AFTER it (finish the last word)
+
     const std::uint64_t readStart = seg.begin > 0 ? seg.begin - 1 : 0;
     const std::uint64_t readEnd   = std::min<std::uint64_t>(file.size, seg.end + MAX_WORD_BYTES);
 
@@ -36,4 +34,4 @@ bool readSegments(const FileList& list, const std::vector<Segment>& segs, std::v
     return true;
 }
 
-}  // namespace wc
+}

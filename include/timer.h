@@ -1,4 +1,3 @@
-// timer.h - tiny wall-clock stopwatch
 #pragma once
 #include <chrono>
 
@@ -15,4 +14,4 @@ private:
     std::chrono::steady_clock::time_point start_;
 };
 
-}  // namespace wc
+}

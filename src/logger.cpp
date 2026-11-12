@@ -1,6 +1,4 @@
-// logger.cpp
 #include "logger.h"
-
 #include <cstdarg>
 #include <cstdio>
 #include <filesystem>
@@ -23,7 +21,7 @@ void emit(const char* level, std::FILE* console, bool toConsole, const char* fmt
         g_file << "[" << g_clock.elapsed() << "s] " << level << msg << std::endl;
 }
 
-}  // namespace
+}
 
 void Logger::init(int rank, int size, bool toFile, const std::string& dir) {
     g_rank = rank;
@@ -50,4 +48,4 @@ void Logger::error(const char* fmt, ...) {
     va_end(ap);
 }
 
-}  // namespace wc
+}
