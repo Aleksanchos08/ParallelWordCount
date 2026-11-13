@@ -1,6 +1,6 @@
 # Parallel Word Count — MPI + OpenMP (C++17)
 
-Final project: *Parallelization of Algorithms* by Alexandr Shashkov and Kira Viryasova MCS-2502.
+Final project: *Parallelization of Algorithms* by Alexandr Shashkov and Kira Viryassova MCS-2502.
 Counts word frequencies over a **large set of text files** with three implementations that share
 the same counting kernel, so results are directly comparable:
 
